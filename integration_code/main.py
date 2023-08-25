@@ -1,4 +1,4 @@
-## import ##
+## import module ##
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
@@ -12,14 +12,21 @@ window.title("Init Window")
 window.geometry("800x500")
 window.resizable(width=FALSE, height=FALSE)
 
+name_entry = ''
+
 ## 함수 ##
+# 아이디 입력 창
 def name_window():
-    name_entry = ''
+    global name_entry
     name_entry = askstring("아이디", "아이디를 입력하세요")
     my_name_lbl.configure(text = name_entry)
     return name_entry
 
+# 다음 캘린더 화면으로 넘어가기
 def open_window():
+    if name_entry == '':
+        messagebox.showinfo("아이디 미 입력", "아이디를 입력하지 않으면 저장되지 않습니다.")
+        # print(name_entry, "저장되지 않습니다.")
     root = Tk()
     root.geometry("800x500")
     agenda = Agenda(root, selectmode='none')
@@ -33,7 +40,7 @@ def open_window():
 
 ## 초기화면 ##
 app_name_lbl = Label(window, text="앱 이름")
-my_name_lbl = Label(window, text= "내 이름")
+my_name_lbl = Label(window, text= "no name")
 
 app_name_lbl.pack()
 my_name_lbl.pack()
