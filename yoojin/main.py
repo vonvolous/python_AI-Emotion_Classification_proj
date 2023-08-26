@@ -210,7 +210,7 @@ if __name__ == '__main__':
         
         my_emotion = emotion_classification(file_path)
         my_emoticon = emotion_icon[my_emotion]
-        agenda.calevent_create(selected_date, my_emoticon, my_emotion)
+        agenda.calevent_create(selected_date, my_emoticon, 'emotion')
         agenda.tag_config('emotion', background='yellow', foreground='black')
 
         photo = Image.open(file_path, mode='r').resize((290, 290))
