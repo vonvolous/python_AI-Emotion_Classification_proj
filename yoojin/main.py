@@ -1,6 +1,6 @@
 # import modules for Calendar
 import tkinter as tk
-from tkcalendar import Calendar
+from tkcalendar import Calendar, DateEntry
 from tkinter import filedialog
 from PIL import ImageTk, Image
 
@@ -177,14 +177,16 @@ if __name__ == '__main__':
 
 
     # 선택된 날짜 이미지 업로드 창 띄우는 함수
-    def uploading_window(selected_date):
+    def uploading_window(e):
+        selected_date = de.get_date()
+        
         global picLabel, textLabel, photo, new_window
         new_window = tk.Toplevel(root)
         new_window.title(selected_date)
         new_window.geometry("300x500")
         
         # choose image button
-        chooseBtn = tk.Button(new_window, text ='Choose File', command = lambda:upload_photo()) 
+        chooseBtn = tk.Button(new_window, text ='Choose File', command = lambda:upload_photo(selected_date)) 
         chooseBtn.grid(row=2, column=1)
         chooseBtn.pack(side="top")
         
@@ -198,12 +200,19 @@ if __name__ == '__main__':
         textLabel.pack()
 
     # uploading_window에 사진 업로드하는 함수
-    def upload_photo():
-        
+    def upload_photo(selected_date):
+        emotion_icon = {"happy" : "\U0001f600", "sad":"\U0001F62D", "fear": "\U0001F62C", "angry": "\U0001F621", "disgust": "\U0001F92E" ,"neutral": "\U0001F610" ,"surprise": "\U0001F632"}
+
         file_path = filedialog.askopenfilename(filetypes=[('Image Files', '*')])
-        file_path.replace('\\','/')
         print('파일 경로', file_path)
+
+        # 이미지 분석 결과 아이콘을 캘린더에 삽입
+        
         my_emotion = emotion_classification(file_path)
+        my_emoticon = emotion_icon[my_emotion]
+        agenda.calevent_create(selected_date, my_emoticon, my_emotion)
+        agenda.tag_config('emotion', background='yellow', foreground='black')
+
         photo = Image.open(file_path, mode='r').resize((290, 290))
         picLabel.img = ImageTk.PhotoImage(photo)
         picLabel.configure(image=picLabel.img)
@@ -212,17 +221,21 @@ if __name__ == '__main__':
     
     root = tk.Tk()
     root.geometry("800x500")
-    agenda = Agenda(root, selectmode='day', cursor='hand1')
-    date = agenda.datetime.today() + agenda.timedelta(days=2)
-    agenda.calevent_create(date, 'Hello World', 'message')
-    agenda.calevent_create(date, 'Reminder 2', 'reminder')
-    agenda.calevent_create(date + agenda.timedelta(days=-7), 'Reminder 1', 'reminder')
-    agenda.calevent_create(date + agenda.timedelta(days=3), 'Message', 'message')
-    agenda.calevent_create(date + agenda.timedelta(days=3), 'Another message', 'message')
-
-    agenda.tag_config('reminder', background='red', foreground='yellow')
-    agenda.pack(fill="both", expand=True)
+    root.title("My Daily Emotion")
     
-    agenda.bind("<<CalendarSelected>>", lambda event: uploading_window(agenda.get_date()))
+    agenda = Agenda(root, selectmode='day', cursor='hand1')
+    # date = agenda.datetime.today() + agenda.timedelta(days=2)
+    # agenda.calevent_create(date, 'Hello World', 'message')
+    # agenda.calevent_create(date, 'Reminder 2', 'reminder')
+    # agenda.calevent_create(date + agenda.timedelta(days=-7), 'Reminder 1', 'reminder')
+    # agenda.calevent_create(date + agenda.timedelta(days=3), 'Message', 'message')
+    # agenda.calevent_create(date + agenda.timedelta(days=3), 'Another message', 'message')
+
+    agenda.pack(fill="both", expand=True)
+    # agenda.bind("<<CalendarSelected>>", lambda event: uploading_window(agenda.get_date()))
+
+    de = DateEntry(root, selectmode="day")
+    de.pack()
+    de.bind("<<DateEntrySelected>>", uploading_window)
     
     root.mainloop()  
