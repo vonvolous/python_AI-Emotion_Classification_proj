@@ -10,6 +10,25 @@ import tensorflow as tf
 import cv2
 import numpy as np
 
+#import module for GPT
+import openai
+
+#import module for emoji
+import emoji
+
+#GPT api_key
+openai.api_key = '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'
+
+#emoji unicode
+e_happy = "\U0001f600"
+e_sad = "\U0001F62D"
+e_fear = "\U0001F62C"   
+e_angry = "\U0001F621"
+e_disgust = "\U0001F92E"   
+e_neutral = "\U0001F610"   
+e_urprise = "\U0001F632"
+
+## 캘린더 띄우기 ##
 class Agenda(Calendar):
     def __init__(self, master=None, **kw):
         Calendar.__init__(self, master, **kw)
@@ -18,7 +37,6 @@ class Agenda(Calendar):
             for j, label in enumerate(row):
                 self._cal_frame.rowconfigure(i + 1, uniform=1)
                 self._cal_frame.columnconfigure(j + 1, uniform=1)
-                label.configure(justify="center", anchor="n", padding=(1, 4))
                 label.configure(justify="center", anchor="n", padding=(1, 4))
 
 
@@ -133,6 +151,8 @@ class Agenda(Calendar):
             text = '%s\n' % date.day + '\n'.join([self.calevents[ev]['text'] for ev in ev_ids])
             label.configure(text=text)
 '''
+
+'''    
 if __name__ == '__main__':
     from tkinter import *
     root = Tk()
@@ -144,4 +164,3 @@ if __name__ == '__main__':
 
     agenda.pack(fill="both", expand=True)
     root.mainloop()    
-'''
