@@ -163,4 +163,4 @@ if __name__ == '__main__':
     agenda.tag_config('reminder', background='red', foreground='yellow')
 
     agenda.pack(fill="both", expand=True)
-    root.mainloop()    
+    root.mainloop()
