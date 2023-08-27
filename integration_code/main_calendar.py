@@ -152,7 +152,7 @@ class Agenda(Calendar):
             label.configure(text=text)
 '''
 
-'''    
+ 
 if __name__ == '__main__':
     from tkinter import *
     root = Tk()
@@ -164,3 +164,5 @@ if __name__ == '__main__':
 
     agenda.pack(fill="both", expand=True)
     root.mainloop()
+    
+'''   
